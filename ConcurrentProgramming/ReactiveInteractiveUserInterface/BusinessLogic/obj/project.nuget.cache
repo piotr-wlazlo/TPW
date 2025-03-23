@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Q/LkNhr9OmY=",
+  "dgSpecHash": "/21HzQChPmg=",
   "success": true,
-  "projectFilePath": "C:\\Users\\piotr\\Desktop\\TPW\\ConcurrentProgramming\\ReactiveInteractiveUserInterface\\BusinessLogic\\BusinessLogic.csproj",
+  "projectFilePath": "C:\\Users\\Hubert\\Source\\Repos\\TPW\\ConcurrentProgramming\\ReactiveInteractiveUserInterface\\BusinessLogic\\BusinessLogic.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\piotr\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+    "C:\\Users\\Hubert\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],
   "logs": []
 }

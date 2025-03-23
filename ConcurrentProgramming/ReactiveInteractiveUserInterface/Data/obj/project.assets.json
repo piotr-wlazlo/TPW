@@ -55,23 +55,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\piotr\\.nuget\\packages\\": {},
+    "C:\\Users\\Hubert\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\piotr\\Desktop\\TPW\\ConcurrentProgramming\\ReactiveInteractiveUserInterface\\Data\\Data.csproj",
+      "projectUniqueName": "C:\\Users\\Hubert\\Source\\Repos\\TPW\\ConcurrentProgramming\\ReactiveInteractiveUserInterface\\Data\\Data.csproj",
       "projectName": "DataLayer",
-      "projectPath": "C:\\Users\\piotr\\Desktop\\TPW\\ConcurrentProgramming\\ReactiveInteractiveUserInterface\\Data\\Data.csproj",
-      "packagesPath": "C:\\Users\\piotr\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\piotr\\Desktop\\TPW\\ConcurrentProgramming\\ReactiveInteractiveUserInterface\\Data\\obj\\",
+      "projectPath": "C:\\Users\\Hubert\\Source\\Repos\\TPW\\ConcurrentProgramming\\ReactiveInteractiveUserInterface\\Data\\Data.csproj",
+      "packagesPath": "C:\\Users\\Hubert\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Hubert\\Source\\Repos\\TPW\\ConcurrentProgramming\\ReactiveInteractiveUserInterface\\Data\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\piotr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Hubert\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
