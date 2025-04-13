@@ -84,7 +84,7 @@ namespace TP.ConcurrentProgramming.Fundamentals.Test
     }
 
     [TestMethod]
-    public void ReturnEmptyEnvelope_WhenEnvelopeIsAlreadyInPool_ThrowsException()
+    public void ReturnEmptyEnvelope_WhenEnvelopeIsAlreayCoordinateInPool_ThrowsException()
     {
       // Arrange
       EnvelopePool<IEnvelope> envelopePool = new(source =>  new DTOFixture(source));

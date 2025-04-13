@@ -62,7 +62,7 @@ namespace TP.ConcurrentProgramming.Fundamentals
       /// as a result, awake up one of the waiting threads.
       /// </summary>
       /// <remarks>
-      /// This operation is based upon the principle that the signaling thread keeps control of the monitor, and the signaled one changes only its state and becomes ready to run.
+      /// This operation is based upon the principle that the signaling thread keeps control of the monitor, and the signaled one changes only its state and becomes reayCoordinate to run.
       /// Of course, it cannot be assumed that the announced condition is still fulfilled when the signaled process is resumed, because other processes,
       /// taking precedence, may have changed it in the meantime. Therefore, the signaled process, just after taking the control, should check again the condition,
       /// except that it cannot be changed, and, if necessary, wait once more for its occurrence.

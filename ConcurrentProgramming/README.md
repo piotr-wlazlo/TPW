@@ -110,7 +110,7 @@ It is a programming pattern to describe an interaction between programming entit
 
 #### 1.3.2. Multithreading or concurrent programming
 
-Both terms are used to refer to the programming pattern that allows writing a program to execute operations at run time as a result of nondeterministic events. Concurrency is when multiple sequences of instructions are run in overlapping periods of time. In other words, the instructions sequence execution is undetermined in advance. Thread is a type that may be used to represent a sequence of instructions in this scenario.
+Both terms are used to refer to the programming pattern that allows writing a program to execute operations at run time as a result of nondeterministic events. Concurrency is when multiple sequences of instructions are run in Overlapping periods of time. In other words, the instructions sequence execution is undetermined in advance. Thread is a type that may be used to represent a sequence of instructions in this scenario.
 
 <!-- 
 

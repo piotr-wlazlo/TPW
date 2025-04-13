@@ -134,6 +134,41 @@ namespace TP.ConcurrentProgramming.Data {
                 ball.Velocity = new Vector(xVelocity, yVelocity);
                 ball.Move(new Vector(newX - xPosition, newY - yPosition));
             }
+
+            for (int i = 0; i < BallsList.Count; i++) {
+                for (int j = i + 1; j < BallsList.Count; j++) {
+                    Ball Ball1 = BallsList[i];
+                    Ball Ball2 = BallsList[j];
+
+                    double xPosition1 = Ball1.Position.x;
+                    double yPosition1 = Ball1.Position.y;
+                    Vector Position1 = new Vector(xPosition1, yPosition1);
+
+                    double xPosition2 = Ball2.Position.x;
+                    double yPosition2 = Ball2.Position.y;
+                    Vector Position2 = new Vector(xPosition2, yPosition2);
+
+                    double xCoordinate = xPosition1 - xPosition2;
+                    double yCoordinate = yPosition1 - yPosition2;
+
+                    double Distance = Math.Sqrt(xCoordinate * xCoordinate + yCoordinate * yCoordinate);
+
+                    if (Distance < BallRadius * 2 && Distance > 0) {
+                        Vector temp = (Vector)Ball1.Velocity;
+                        Ball1.Velocity = Ball2.Velocity;
+                        Ball2.Velocity = temp;
+
+                        double Overlap = BallRadius * 2 - Distance;
+
+                        double moveX = (xCoordinate / Distance) * (Overlap / 2);
+                        double moveY = (yCoordinate / Distance) * (Overlap / 2);
+
+                        Ball1.Move(new Vector(moveX, moveY));
+                        Ball2.Move(new Vector(-moveX, -moveY));
+                    }
+
+                }
+            }
         }
 
 

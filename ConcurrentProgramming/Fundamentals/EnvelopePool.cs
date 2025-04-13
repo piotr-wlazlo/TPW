@@ -63,7 +63,7 @@ namespace TP.ConcurrentProgramming.Fundamentals
       if (envelope == null)
         throw new NullReferenceException($"{nameof(envelope)} must not be null");
       if (m_Queue.Contains(envelope))
-        throw new InvalidOperationException("ReturnEmptyEnvelope: envelope is already in pool");
+        throw new InvalidOperationException("ReturnEmptyEnvelope: envelope is alreayCoordinate in pool");
       if (envelope.GetIEnvelopeManager != this)
         throw new InvalidOperationException("ReturnEmptyEnvelope: envelope is not from this pool");
       lock (this)
