@@ -26,9 +26,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic {
 
     public abstract void AddBall(Action<IPosition, IBall> upperLayerHandler);
 
-        public abstract void RemoveBall();
+    public abstract void RemoveBall();
 
-        #region IDisposable
+    #region IDisposable
 
         public abstract void Dispose();
 

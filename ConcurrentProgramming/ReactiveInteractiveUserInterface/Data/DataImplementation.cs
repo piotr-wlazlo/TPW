@@ -14,13 +14,18 @@ using System.Diagnostics;
 namespace TP.ConcurrentProgramming.Data {
   internal class DataImplementation : DataAbstractAPI {
     #region ctor
-
+        
     public DataImplementation() {
-      MoveTimer = new Timer(Move, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(16));
+      MoveTimer = new Timer(Move, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(1000/60));
     }
 
-    #endregion ctor
+        #endregion ctor
 
+    private const double TableWidth = 400.0;
+    private const double TableHeight = 400.0;
+    private const double BallRadius = 10.0;
+    private const double TableBorder = 5.0;
+        
     #region DataAbstractAPI
 
     public override void Start(int numberOfBalls, Action<IVector, IBall> upperLayerHandler) {
@@ -29,10 +34,15 @@ namespace TP.ConcurrentProgramming.Data {
       if (upperLayerHandler == null)
         throw new ArgumentNullException(nameof(upperLayerHandler));
       Random random = new Random();
+
       for (int i = 0; i < numberOfBalls; i++) {
-        Vector startingPosition = new(random.Next(10, 390), random.Next(10, 390));
-        Vector startingVelocity = new(random.NextDouble() * 3 - 1, random.NextDouble() * 3 - 1);
+        Vector startingPosition = new(random.Next(10, (int)TableWidth - 10), random.Next(10, (int)TableHeight - 10));
         
+        double velocity = random.NextDouble() * 3 - 1;
+        double angle = 2 * Math.PI * random.NextDouble();
+
+        Vector startingVelocity = new(velocity * Math.Cos(angle), velocity * Math.Sin(angle));
+
         Ball newBall = new(startingPosition, startingVelocity);
         
         upperLayerHandler(startingPosition, newBall);
@@ -100,41 +110,38 @@ namespace TP.ConcurrentProgramming.Data {
     private Random RandomGenerator = new();
     private List<Ball> BallsList = [];
 
-    private void Move(object? x) {
-        foreach (Ball item in BallsList) {
-            double xVelocity = item.Velocity.x;
-            double yVelocity = item.Velocity.y;
+        private void Move(object? x) {
+            foreach (Ball ball in BallsList) {
+                ball.Move(new Vector(ball.Velocity.x, ball.Velocity.y));
 
-            double xPosition = item.Position.x;
-            double yPosition = item.Position.y;
+                double xPosition = ball.Position.x;
+                double yPosition = ball.Position.y;
 
-            double newX = xVelocity + xPosition;
-            double newY = yVelocity + yPosition;
+                double xVelocity = ball.Velocity.x;
+                double yVelocity = ball.Velocity.y;
 
-            if (newX <= 10) {
-                xVelocity = Math.Abs(xVelocity);
+                if ((xPosition - BallRadius <= 0 && xVelocity < 0) || xPosition + BallRadius >= TableWidth && xVelocity > 0) {
+                    xVelocity = -xVelocity;
+                }
+
+                if ((yPosition - BallRadius <= 0 && yVelocity < 0) || yPosition + BallRadius >= TableHeight && yVelocity > 0) {
+                    yVelocity = -yVelocity;
+                }
+
+                double newX = xPosition + xVelocity;
+                double newY = yPosition + yVelocity;
+
+                ball.Velocity = new Vector(xVelocity, yVelocity);
+                ball.Move(new Vector(newX - xPosition, newY - yPosition));
             }
-            else if (newX >= 380) {
-                xVelocity = -Math.Abs(xVelocity);
-            }
-
-            if (newY <= 0) {
-                yVelocity = Math.Abs(yVelocity);
-            }
-            else if (newY >= 390) {
-                yVelocity = -Math.Abs(yVelocity);
-            }
-
-            item.Velocity = new Vector(xVelocity, yVelocity);
-            item.Move(new Vector(newX - xPosition, newY - yPosition));
         }
-    }
 
-    #endregion private
 
-    #region TestingInfrastructure
+        #endregion private
 
-    [Conditional("DEBUG")]
+        #region TestingInfrastructure
+
+        [Conditional("DEBUG")]
     internal void CheckBallsList(Action<IEnumerable<IBall>> returnBallsList)
     {
       returnBallsList(BallsList);

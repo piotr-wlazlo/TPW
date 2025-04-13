@@ -8,14 +8,11 @@
 //
 //_____________________________________________________________________________________________________________________________________
 
-namespace TP.ConcurrentProgramming.Data
-{
-  public abstract class DataAbstractAPI : IDisposable
-  {
+namespace TP.ConcurrentProgramming.Data {
+  public abstract class DataAbstractAPI : IDisposable {
     #region Layer Factory
 
-    public static DataAbstractAPI GetDataLayer()
-    {
+    public static DataAbstractAPI GetDataLayer() {
       return modelInstance.Value;
     }
 
