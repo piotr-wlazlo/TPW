@@ -55,23 +55,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Hubert\\.nuget\\packages\\": {},
+    "C:\\Users\\piotr\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Hubert\\Source\\Repos\\TPW\\ConcurrentProgramming\\RealTimeProgramming\\RealTimeProgramming.csproj",
+      "projectUniqueName": "C:\\Users\\piotr\\Desktop\\TPW\\ConcurrentProgramming\\RealTimeProgramming\\RealTimeProgramming.csproj",
       "projectName": "TP.ConcurrentProgramming.RealTimeProgramming",
-      "projectPath": "C:\\Users\\Hubert\\Source\\Repos\\TPW\\ConcurrentProgramming\\RealTimeProgramming\\RealTimeProgramming.csproj",
-      "packagesPath": "C:\\Users\\Hubert\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Hubert\\Source\\Repos\\TPW\\ConcurrentProgramming\\RealTimeProgramming\\obj\\",
+      "projectPath": "C:\\Users\\piotr\\Desktop\\TPW\\ConcurrentProgramming\\RealTimeProgramming\\RealTimeProgramming.csproj",
+      "packagesPath": "C:\\Users\\piotr\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\piotr\\Desktop\\TPW\\ConcurrentProgramming\\RealTimeProgramming\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Hubert\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\piotr\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],

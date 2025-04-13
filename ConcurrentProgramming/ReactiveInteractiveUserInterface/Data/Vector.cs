@@ -19,11 +19,11 @@ namespace TP.ConcurrentProgramming.Data
     #region IVector
 
     /// <summary>
-    /// The X component of the vector.
+    /// The newX component of the vector.
     /// </summary>
     public double x { get; init; }
     /// <summary>
-    /// The Y component of the vector.
+    /// The newY component of the vector.
     /// </summary>
     public double y { get; init; }
 

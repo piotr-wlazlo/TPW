@@ -13,47 +13,47 @@ using System.Reactive;
 using System.Reactive.Linq;
 using UnderneathLayerAPI = TP.ConcurrentProgramming.BusinessLogic.BusinessLogicAbstractAPI;
 
-namespace TP.ConcurrentProgramming.Presentation.Model
-{
+namespace TP.ConcurrentProgramming.Presentation.Model {
   /// <summary>
   /// Class Model - implements the <see cref="ModelAbstractApi" />
   /// </summary>
-  internal class ModelImplementation : ModelAbstractApi
-  {
-    internal ModelImplementation() : this(null)
-    { }
+  internal class ModelImplementation : ModelAbstractApi {
+    internal ModelImplementation() : this(null) { }
 
-    internal ModelImplementation(UnderneathLayerAPI underneathLayer)
-    {
+    internal ModelImplementation(UnderneathLayerAPI underneathLayer) {
       layerBellow = underneathLayer == null ? UnderneathLayerAPI.GetBusinessLogicLayer() : underneathLayer;
       eventObservable = Observable.FromEventPattern<BallChaneEventArgs>(this, "BallChanged");
     }
 
     #region ModelAbstractApi
 
-    public override void Dispose()
-    {
+    public override void Dispose() {
       if (Disposed)
         throw new ObjectDisposedException(nameof(Model));
       layerBellow.Dispose();
       Disposed = true;
     }
 
-    public override IDisposable Subscribe(IObserver<IBall> observer)
-    {
+    public override IDisposable Subscribe(IObserver<IBall> observer) {
       return eventObservable.Subscribe(x => observer.OnNext(x.EventArgs.Ball), ex => observer.OnError(ex), () => observer.OnCompleted());
     }
 
-    public override void Start(int numberOfBalls)
-    {
+    public override void Start(int numberOfBalls) {
       layerBellow.Start(numberOfBalls, StartHandler);
+    }
+    public override void AddBall() {
+        layerBellow.AddBall(StartHandler);
+    }
+
+    public override void RemoveBall() {
+        layerBellow.RemoveBall();
     }
 
     #endregion ModelAbstractApi
 
     #region API
 
-    public event EventHandler<BallChaneEventArgs> BallChanged;
+        public event EventHandler<BallChaneEventArgs> BallChanged;
 
     #endregion API
 

@@ -8,14 +8,11 @@
 //
 //_____________________________________________________________________________________________________________________________________
 
-namespace TP.ConcurrentProgramming.BusinessLogic
-{
-  public abstract class BusinessLogicAbstractAPI : IDisposable
-  {
+namespace TP.ConcurrentProgramming.BusinessLogic {
+  public abstract class BusinessLogicAbstractAPI : IDisposable {
     #region Layer Factory
 
-    public static BusinessLogicAbstractAPI GetBusinessLogicLayer()
-    {
+    public static BusinessLogicAbstractAPI GetBusinessLogicLayer() {
       return modelInstance.Value;
     }
 
@@ -27,9 +24,13 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
     public abstract void Start(int numberOfBalls, Action<IPosition, IBall> upperLayerHandler);
 
-    #region IDisposable
+    public abstract void AddBall(Action<IPosition, IBall> upperLayerHandler);
 
-    public abstract void Dispose();
+        public abstract void RemoveBall();
+
+        #region IDisposable
+
+        public abstract void Dispose();
 
     #endregion IDisposable
 
@@ -52,14 +53,12 @@ namespace TP.ConcurrentProgramming.BusinessLogic
   /// </remarks>
   public record Dimensions(double BallDimension, double TableHeight, double TableWidth);
 
-  public interface IPosition
-  {
+  public interface IPosition {
     double x { get; init; }
     double y { get; init; }
   }
 
-  public interface IBall 
-  {
+  public interface IBall {
     event EventHandler<IPosition> NewPositionNotification;
   }
 }

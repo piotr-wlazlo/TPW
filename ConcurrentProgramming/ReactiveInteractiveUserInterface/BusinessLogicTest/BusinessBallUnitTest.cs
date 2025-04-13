@@ -40,9 +40,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
 
     private class VectorFixture : Data.IVector
     {
-      internal VectorFixture(double X, double Y)
+      internal VectorFixture(double newX, double newY)
       {
-        x = X; y = Y;
+        x = newX; y = newY;
       }
 
       public double x { get; init; }

@@ -20,8 +20,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     public BusinessLogicImplementation() : this(null)
     { }
 
-    internal BusinessLogicImplementation(UnderneathLayerAPI? underneathLayer)
-    {
+    internal BusinessLogicImplementation(UnderneathLayerAPI? underneathLayer) {
       layerBellow = underneathLayer == null ? UnderneathLayerAPI.GetDataLayer() : underneathLayer;
     }
 
@@ -29,16 +28,14 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
     #region BusinessLogicAbstractAPI
 
-    public override void Dispose()
-    {
+    public override void Dispose() {
       if (Disposed)
         throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
       layerBellow.Dispose();
       Disposed = true;
     }
 
-    public override void Start(int numberOfBalls, Action<IPosition, IBall> upperLayerHandler)
-    {
+    public override void Start(int numberOfBalls, Action<IPosition, IBall> upperLayerHandler) {
       if (Disposed)
         throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
       if (upperLayerHandler == null)
@@ -46,7 +43,21 @@ namespace TP.ConcurrentProgramming.BusinessLogic
       layerBellow.Start(numberOfBalls, (startingPosition, databall) => upperLayerHandler(new Position(startingPosition.x, startingPosition.x), new Ball(databall)));
     }
 
-    #endregion BusinessLogicAbstractAPI
+        public override void AddBall(Action<IPosition, IBall> upperLayerHandler) {
+            if (Disposed)
+                throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
+            if (upperLayerHandler == null)
+                throw new ArgumentNullException(nameof(upperLayerHandler));
+            layerBellow.AddBall((startingPosition, databall) => upperLayerHandler(new Position(startingPosition.x, startingPosition.y), new Ball(databall)));
+        }
+
+        public override void RemoveBall() {
+            if (Disposed)
+                throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
+            layerBellow.RemoveBall();
+        }
+
+        #endregion BusinessLogicAbstractAPI
 
     #region private
 
@@ -59,8 +70,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     #region TestingInfrastructure
 
     [Conditional("DEBUG")]
-    internal void CheckObjectDisposed(Action<bool> returnInstanceDisposed)
-    {
+    internal void CheckObjectDisposed(Action<bool> returnInstanceDisposed) {
       returnInstanceDisposed(Disposed);
     }
 
