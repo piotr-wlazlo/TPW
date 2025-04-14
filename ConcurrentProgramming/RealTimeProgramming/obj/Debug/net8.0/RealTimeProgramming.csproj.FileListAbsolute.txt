@@ -1,0 +1,13 @@
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\RealTimeProgramming\bin\Debug\net8.0\TP.ConcurrentProgramming.RealTimeProgramming.deps.json
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\RealTimeProgramming\bin\Debug\net8.0\TP.ConcurrentProgramming.RealTimeProgramming.dll
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\RealTimeProgramming\bin\Debug\net8.0\TP.ConcurrentProgramming.RealTimeProgramming.pdb
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\RealTimeProgramming\obj\Debug\net8.0\RealTimeProgramming.csproj.AssemblyReference.cache
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\RealTimeProgramming\obj\Debug\net8.0\RealTimeProgramming.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\RealTimeProgramming\obj\Debug\net8.0\RealTimeProgramming.AssemblyInfoInputs.cache
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\RealTimeProgramming\obj\Debug\net8.0\RealTimeProgramming.AssemblyInfo.cs
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\RealTimeProgramming\obj\Debug\net8.0\RealTimeProgramming.csproj.CoreCompileInputs.cache
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\RealTimeProgramming\obj\Debug\net8.0\RealTimeProgramming.sourcelink.json
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\RealTimeProgramming\obj\Debug\net8.0\TP.ConcurrentProgramming.RealTimeProgramming.dll
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\RealTimeProgramming\obj\Debug\net8.0\refint\TP.ConcurrentProgramming.RealTimeProgramming.dll
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\RealTimeProgramming\obj\Debug\net8.0\TP.ConcurrentProgramming.RealTimeProgramming.pdb
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\RealTimeProgramming\obj\Debug\net8.0\ref\TP.ConcurrentProgramming.RealTimeProgramming.dll

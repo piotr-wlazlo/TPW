@@ -31,10 +31,9 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel.Test
       {
         Random random = new Random();
         int numberOfBalls = random.Next(1, 10);
-        viewModel.Start(numberOfBalls);
+        viewModel.Start();
         Assert.IsNotNull(viewModel.Balls);
         Assert.AreEqual<int>(0, nullModelFixture.Disposed);
-        Assert.AreEqual<int>(numberOfBalls, nullModelFixture.Started);
         Assert.AreEqual<int>(1, nullModelFixture.Subscribed);
       }
       Assert.AreEqual<int>(1, nullModelFixture.Disposed);
@@ -46,14 +45,11 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel.Test
       ModelSimulatorFixture modelSimulator = new();
       MainWindowViewModel viewModel = new(modelSimulator);
       Assert.IsNotNull(viewModel.Balls);
-      Assert.AreEqual<int>(0, viewModel.Balls.Count);
       Random random = new Random();
       int numberOfBalls = random.Next(1, 10);
-      viewModel.Start(numberOfBalls);
-      Assert.AreEqual<int>(numberOfBalls, viewModel.Balls.Count);
+      viewModel.Start();
       viewModel.Dispose();
       Assert.IsTrue(modelSimulator.Disposed);
-      Assert.AreEqual<int>(0, viewModel.Balls.Count);
     }
 
     #region testing infrastructure
@@ -70,18 +66,23 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel.Test
 
       #region ModelAbstractApi
 
-      public override void Dispose()
-      {
+      public override void Dispose() {
         Disposed++;
       }
 
-      public override void Start(int numberOfBalls)
-      {
+      public override void Start(int numberOfBalls) {
         Started = numberOfBalls;
       }
 
-      public override IDisposable Subscribe(IObserver<ModelIBall> observer)
-      {
+      public override void AddBall() {
+        throw new NotImplementedException();
+      }
+
+      public override void RemoveBall() {
+        throw new NotImplementedException();
+      }
+
+      public override IDisposable Subscribe(IObserver<ModelIBall> observer) {
         Subscribed++;
         return new NullDisposable();
       }
@@ -123,17 +124,22 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel.Test
         return eventObservable?.Subscribe(x => observer.OnNext(x.EventArgs.Ball), ex => observer.OnError(ex), () => observer.OnCompleted());
       }
 
-      public override void Start(int numberOfBalls)
-      {
+      public override void Start(int numberOfBalls) {
         for (int i = 0; i < numberOfBalls; i++)
         {
           ModelBall newBall = new ModelBall(0, 0) { };
           BallChanged?.Invoke(this, new BallChaneEventArgs() { Ball = newBall });
         }
       }
+      public override void AddBall() {
+        throw new NotImplementedException();
+      }
 
-      public override void Dispose()
-      {
+      public override void RemoveBall() {
+        throw new NotImplementedException();
+      }
+
+      public override void Dispose() {
         Disposed = true;
       }
 

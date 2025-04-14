@@ -27,7 +27,7 @@ namespace TP.ConcurrentProgramming.Data {
 
         #endregion IBall
 
-        #region privateZ
+        #region private
 
         private Vector position;
 

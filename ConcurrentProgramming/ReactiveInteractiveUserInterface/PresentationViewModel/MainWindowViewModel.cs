@@ -16,23 +16,23 @@ using ModelIBall = TP.ConcurrentProgramming.Presentation.Model.IBall;
 
 namespace TP.ConcurrentProgramming.Presentation.ViewModel {
     public class MainWindowViewModel : ViewModelBase, IDisposable {
-        #region ctor
+    #region ctor
 
-        public MainWindowViewModel() : this(null)
-        { }
+    public MainWindowViewModel() : this(null)
+    { }
 
-        internal MainWindowViewModel(ModelAbstractApi modelLayerAPI) {
-            ModelLayer = modelLayerAPI == null ? ModelAbstractApi.CreateModel() : modelLayerAPI;
-            Observer = ModelLayer.Subscribe<ModelIBall>(x => Balls.Add(x));
-            StartCommand = new RelayCommand(Start);
-            StopCommand = new RelayCommand(Stop);
-            AddBallCommand = new RelayCommand(AddBall, CanAddBall);
-            RemoveBallCommand = new RelayCommand(RemoveBall, CanRemoveBall);
-        }
+    internal MainWindowViewModel(ModelAbstractApi modelLayerAPI) {
+        ModelLayer = modelLayerAPI == null ? ModelAbstractApi.CreateModel() : modelLayerAPI;
+        Observer = ModelLayer.Subscribe<ModelIBall>(x => Balls.Add(x));
+        StartCommand = new RelayCommand(Start);
+        StopCommand = new RelayCommand(Stop);
+        AddBallCommand = new RelayCommand(AddBall, CanAddBall);
+        RemoveBallCommand = new RelayCommand(RemoveBall, CanRemoveBall);
+    }
 
-        #endregion ctor
+    #endregion ctor
 
-        #region public API
+    #region public API
 
         public ObservableCollection<ModelIBall> Balls { get; } = new ObservableCollection<ModelIBall>();
 
@@ -107,8 +107,13 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel {
     public void Stop() {
         if (IsRunning) {
             IsRunning = false;
-            Balls.Clear();
-        }
+
+            while (Balls.Count > 0) {
+                ModelLayer.RemoveBall();
+                Balls.RemoveAt(Balls.Count - 1);
+            }
+            BallCount = 0;
+            }
     }
 
     public void AddBall() {
@@ -123,7 +128,7 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel {
     }
 
     public void RemoveBall() {
-        if (IsRunning && Balls.Count > 0) {
+        if (IsRunning && Balls.Count > 1) {
             IsRunning = false;
             
             ModelLayer.RemoveBall();
@@ -138,7 +143,7 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel {
     }
 
     public bool CanRemoveBall() {
-        return IsRunning && Balls.Count > 0;
+        return IsRunning && Balls.Count > 1;
     }
 
     #endregion public API

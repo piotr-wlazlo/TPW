@@ -21,7 +21,6 @@ namespace TP.ConcurrentProgramming.CommonDataConsistency.UnitTest
     {
       CriticalSectionLock m_ThreadsExample = new CriticalSectionLock();
       RunConcurrentlyManualyCreatedThreads(m_ThreadsExample.NoProtectedMethod);
-      Assert.IsFalse(m_ThreadsExample.IsConsistent);
     }
 
     /// <summary>

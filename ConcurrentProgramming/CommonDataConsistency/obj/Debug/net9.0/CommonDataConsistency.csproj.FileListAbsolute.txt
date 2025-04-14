@@ -1,0 +1,13 @@
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\CommonDataConsistency\bin\Debug\net9.0\TP.ConcurrentProgramming.CommonDataConsistency.deps.json
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\CommonDataConsistency\bin\Debug\net9.0\TP.ConcurrentProgramming.CommonDataConsistency.dll
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\CommonDataConsistency\bin\Debug\net9.0\TP.ConcurrentProgramming.CommonDataConsistency.pdb
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\CommonDataConsistency\obj\Debug\net9.0\CommonDataConsistency.csproj.AssemblyReference.cache
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\CommonDataConsistency\obj\Debug\net9.0\CommonDataConsistency.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\CommonDataConsistency\obj\Debug\net9.0\CommonDataConsistency.AssemblyInfoInputs.cache
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\CommonDataConsistency\obj\Debug\net9.0\CommonDataConsistency.AssemblyInfo.cs
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\CommonDataConsistency\obj\Debug\net9.0\CommonDataConsistency.csproj.CoreCompileInputs.cache
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\CommonDataConsistency\obj\Debug\net9.0\CommonDataConsistency.sourcelink.json
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\CommonDataConsistency\obj\Debug\net9.0\TP.ConcurrentProgramming.CommonDataConsistency.dll
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\CommonDataConsistency\obj\Debug\net9.0\refint\TP.ConcurrentProgramming.CommonDataConsistency.dll
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\CommonDataConsistency\obj\Debug\net9.0\TP.ConcurrentProgramming.CommonDataConsistency.pdb
+C:\Users\piotr\Desktop\TPW\ConcurrentProgramming\CommonDataConsistency\obj\Debug\net9.0\ref\TP.ConcurrentProgramming.CommonDataConsistency.dll
