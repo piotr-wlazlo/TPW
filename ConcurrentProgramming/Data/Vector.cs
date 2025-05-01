@@ -32,10 +32,23 @@ namespace TP.ConcurrentProgramming.Data
     /// <summary>
     /// Creates new instance of <seealso cref="Vector"/> and initialize all properties
     /// </summary>
-    public Vector(double XComponent, double YComponent)
-    {
+    public Vector(double XComponent, double YComponent) {
       x = XComponent;
       y = YComponent;
     }
-  }
+
+    public static Vector operator +(Vector a, Vector b) => new Vector(a.x + b.x, a.y + b.y);
+    public static Vector operator -(Vector a, Vector b) => new Vector(a.x - b.x, a.y - b.y);
+        public static Vector operator *(Vector a, double b) => new Vector(a.x * b, a.y * b);
+        public static Vector operator *(double b, Vector a) => new Vector(a.x * b, a.y * b);
+        public double Dot(Vector other) => x * other.x + y * other.y;
+        public double Length => Math.Sqrt(x * x + y * y);
+        public Vector Normalize() {
+            double length = Length;
+            if (length == 0) {
+                throw new InvalidOperationException("Cannot normalize a zero-length vector.");
+            }
+            return new Vector(x / length, y / length);
+        }
+    }
 }

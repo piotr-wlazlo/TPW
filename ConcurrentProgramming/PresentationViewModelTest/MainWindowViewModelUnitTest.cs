@@ -168,6 +168,8 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel.Test
 
         public double Left => throw new NotImplementedException();
 
+        public double Mass => throw new NotImplementedException();
+
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler? PropertyChanged;

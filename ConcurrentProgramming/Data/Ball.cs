@@ -47,7 +47,7 @@ namespace TP.ConcurrentProgramming.Data {
         public Vector Position => position;
 
         IVector IBall.Position => Position;
-        public double Mass { get; }
+                public double Mass { get; }
         public double Diameter { get; }
     }
 }

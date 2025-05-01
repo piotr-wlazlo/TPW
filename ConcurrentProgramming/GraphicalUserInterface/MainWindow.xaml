@@ -36,13 +36,13 @@
                                 <Ellipse.Style>
                                     <Style TargetType="Ellipse">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Mass}" Value="1">
+                                            <DataTrigger Binding="{Binding Mass}" Value="1.0">
                                                 <Setter Property="Fill" Value="LightPink"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Mass}" Value="2">
+                                            <DataTrigger Binding="{Binding Mass}" Value="2.5">
                                                 <Setter Property="Fill" Value="HotPink"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Mass}" Value="3">
+                                            <DataTrigger Binding="{Binding Mass}" Value="5.0">
                                                 <Setter Property="Fill" Value="DeepPink"/>
                                             </DataTrigger>
                                         </Style.Triggers>

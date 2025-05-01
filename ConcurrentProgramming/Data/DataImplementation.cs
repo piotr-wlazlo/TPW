@@ -8,6 +8,7 @@
 //
 //_____________________________________________________________________________________________________________________________________
 
+using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
 
@@ -24,8 +25,9 @@ namespace TP.ConcurrentProgramming.Data {
     private const double TableWidth = 400.0;
     private const double TableHeight = 400.0;
     private const double BallRadius = 10.0;
-    private const double TableBorder = 5.0;
-        
+    double[] MassValues = [1.0, 2.5, 5.0];
+
+
     #region DataAbstractAPI
 
     public override void Start(int numberOfBalls, Action<IVector, IBall> upperLayerHandler) {
@@ -43,12 +45,10 @@ namespace TP.ConcurrentProgramming.Data {
 
         Vector startingVelocity = new(velocity * Math.Cos(angle), velocity * Math.Sin(angle));
 
-        double mass = random.Next(1, 4);
-        double diameter = BallRadius * 2;
-        Ball newBall = new(startingPosition, startingVelocity, mass, diameter);
-        
+        double Mass = MassValues[random.Next(MassValues.Length)];
+
+        Ball newBall = new(startingPosition, startingVelocity, Mass, BallRadius * 2.0);
         upperLayerHandler(startingPosition, newBall);
-        
         BallsList.Add(newBall);
       }
     }
@@ -64,9 +64,9 @@ namespace TP.ConcurrentProgramming.Data {
         Vector startingPosition = new(random.Next(10, 390), random.Next(10, 390));
         Vector startingVelocity = new(random.NextDouble() * 3 - 1, random.NextDouble() * 3 - 1);
 
-        double mass = random.Next(1, 4);
-        double diameter = BallRadius * 2;
-        Ball newBall = new(startingPosition, startingVelocity, mass, diameter);
+        double Mass = MassValues[random.Next(MassValues.Length)];
+
+        Ball newBall = new(startingPosition, startingVelocity, Mass, BallRadius * 2.0);
         upperLayerHandler(startingPosition, newBall);
         BallsList.Add(newBall);
     }
@@ -144,33 +144,45 @@ namespace TP.ConcurrentProgramming.Data {
                     Ball Ball1 = BallsList[i];
                     Ball Ball2 = BallsList[j];
 
-                    double xPosition1 = Ball1.Position.x;
-                    double yPosition1 = Ball1.Position.y;
-                    Vector Position1 = new Vector(xPosition1, yPosition1);
+                    Vector Position1 = Ball1.Position;
+                    Vector Position2 = Ball2.Position;
+                    Vector Delta = Position1 - Position2;
+                    double Distance = Delta.Length;
 
-                    double xPosition2 = Ball2.Position.x;
-                    double yPosition2 = Ball2.Position.y;
-                    Vector Position2 = new Vector(xPosition2, yPosition2);
+                    if (Distance < (Ball1.Diameter + Ball2.Diameter) / 2.0 && Distance > 0) {
+                        Vector Velocity1 = (Vector)Ball1.Velocity;
+                        Vector Velocity2 = (Vector)Ball2.Velocity;
 
-                    double xCoordinate = xPosition1 - xPosition2;
-                    double yCoordinate = yPosition1 - yPosition2;
+                        double Mass1 = Ball1.Mass;
+                        double Mass2 = Ball2.Mass;
 
-                    double Distance = Math.Sqrt(xCoordinate * xCoordinate + yCoordinate * yCoordinate);
+                        Vector Normal = Delta.Normalize();
+                        Vector Tangent = new Vector(-Normal.y, Normal.x);
 
-                    if (Distance < BallRadius * 2 && Distance > 0) {
-                        Vector temp = (Vector)Ball1.Velocity;
-                        Ball1.Velocity = Ball2.Velocity;
-                        Ball2.Velocity = temp;
+                        double Velocity1Normal = Normal.Dot(Velocity1);
+                        double Velocity2Normal = Normal.Dot(Velocity2);
 
-                        double Overlap = BallRadius * 2 - Distance;
+                        double Velocity1Tangent = Tangent.Dot(Velocity1);
+                        double Velocity2Tangent = Tangent.Dot(Velocity2);
 
-                        double moveX = (xCoordinate / Distance) * (Overlap / 2);
-                        double moveY = (yCoordinate / Distance) * (Overlap / 2);
+                        double newVelocity1Normal = (Velocity1Normal * (Mass1 - Mass2) + 2 * Mass2 * Velocity2Normal) / (Mass1 + Mass2);
+                        double newVelocity2Normal = (Velocity2Normal * (Mass2 - Mass1) + 2 * Mass1 * Velocity1Normal) / (Mass1 + Mass2);
 
-                        Ball1.Move(new Vector(moveX, moveY));
-                        Ball2.Move(new Vector(-moveX, -moveY));
+                        Vector newVelocity1NormalVector = Normal * newVelocity1Normal;
+                        Vector newVelocity2NormalVector = Normal * newVelocity2Normal;
+
+                        Vector newVelocity1TangentVector = Tangent * Velocity1Tangent;
+                        Vector newVelocity2TangentVector = Tangent * Velocity2Tangent;
+
+                        Ball1.Velocity = newVelocity1NormalVector + newVelocity1TangentVector;
+                        Ball2.Velocity = newVelocity2NormalVector + newVelocity2TangentVector;
+
+                        double Overlap = (Ball1.Diameter + Ball2.Diameter) / 2.0 - Distance;
+                        Vector correction = Normal * (Overlap / 2.0);
+
+                        Ball1.Move(correction);
+                        Ball2.Move(new Vector(-correction.x, -correction.y));
                     }
-
                 }
             }
         }
