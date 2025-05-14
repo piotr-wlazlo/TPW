@@ -157,7 +157,8 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel.Test
 
       private class ModelBall : ModelIBall
       {
-        public ModelBall(double top, double left)
+                public event PropertyChangedEventHandler? PropertyChanged;
+                public ModelBall(double top, double left)
         { }
 
         #region IBall
@@ -169,12 +170,6 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel.Test
         public double Left => throw new NotImplementedException();
 
         public double Mass => throw new NotImplementedException();
-
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        #endregion INotifyPropertyChanged
 
         #endregion IBall
       }
