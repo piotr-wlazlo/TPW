@@ -16,7 +16,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
+
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10, 10, 10, 0" Grid.Row="0">
             <Button Content="start" Command="{Binding StartCommand}" Margin="10" Width="100" Height="35" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16"/>
             <Button Content="stop" Command="{Binding StopCommand}" Margin="10" Width="100" Height="35" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16"/>

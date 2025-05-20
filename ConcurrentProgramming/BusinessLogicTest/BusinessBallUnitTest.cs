@@ -8,43 +8,31 @@
 //
 //_____________________________________________________________________________________________________________________________________
 
-namespace TP.ConcurrentProgramming.BusinessLogic.Test
-{
-  [TestClass]
-  public class BallUnitTest
-  {
+namespace TP.ConcurrentProgramming.BusinessLogic.Test {
+    [TestClass]
+    public class BallUnitTest {
+        #region testing instrumentation
 
-    #region testing instrumentation
+        private class DataBallFixture : Data.IBall {
+            public Data.IVector Velocity { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            public Data.IVector Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-    private class DataBallFixture : Data.IBall 
-    {
-
-      public Data.IVector Velocity { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-      public Data.IVector Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            public Data.IBall Ball { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            public double Mass { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            public double Diameter { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
             public event EventHandler<Data.IVector>? NewPositionNotification;
+        }
 
-            public double Mass { get => throw new NotImplementedException(); }
+        private class VectorFixture : Data.IVector {
+            internal VectorFixture(double newX, double newY) {
+                x = newX; y = newY;
+            }
 
-            public double Diameter { get => throw new NotImplementedException(); }
+            public double x { get; init; }
+            public double y { get; init; }
+        }
 
-            internal void Move()
-      {
-        NewPositionNotification?.Invoke(this, new VectorFixture(0.0, 0.0));
-      }
+        #endregion testing instrumentation
     }
-
-    private class VectorFixture : Data.IVector
-    {
-      internal VectorFixture(double newX, double newY)
-      {
-        x = newX; y = newY;
-      }
-
-      public double x { get; init; }
-      public double y { get; init; }
-    }
-
-    #endregion testing instrumentation
-  }
 }
