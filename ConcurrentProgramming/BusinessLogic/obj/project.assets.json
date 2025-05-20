@@ -74,23 +74,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\piotr\\.nuget\\packages\\": {},
+    "C:\\Users\\Hubert\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\piotr\\Desktop\\TPW\\ConcurrentProgramming\\BusinessLogic\\BusinessLogic.csproj",
+      "projectUniqueName": "C:\\Users\\Hubert\\Source\\Repos\\TPW2\\ConcurrentProgramming\\BusinessLogic\\BusinessLogic.csproj",
       "projectName": "TP.ConcurrentProgramming.BusinessLogic",
-      "projectPath": "C:\\Users\\piotr\\Desktop\\TPW\\ConcurrentProgramming\\BusinessLogic\\BusinessLogic.csproj",
-      "packagesPath": "C:\\Users\\piotr\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\piotr\\Desktop\\TPW\\ConcurrentProgramming\\BusinessLogic\\obj\\",
+      "projectPath": "C:\\Users\\Hubert\\Source\\Repos\\TPW2\\ConcurrentProgramming\\BusinessLogic\\BusinessLogic.csproj",
+      "packagesPath": "C:\\Users\\Hubert\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Hubert\\Source\\Repos\\TPW2\\ConcurrentProgramming\\BusinessLogic\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\piotr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Hubert\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -106,8 +106,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\piotr\\Desktop\\TPW\\ConcurrentProgramming\\Data\\Data.csproj": {
-              "projectPath": "C:\\Users\\piotr\\Desktop\\TPW\\ConcurrentProgramming\\Data\\Data.csproj"
+            "C:\\Users\\Hubert\\Source\\Repos\\TPW2\\ConcurrentProgramming\\Data\\Data.csproj": {
+              "projectPath": "C:\\Users\\Hubert\\Source\\Repos\\TPW2\\ConcurrentProgramming\\Data\\Data.csproj"
             }
           }
         }
@@ -149,7 +149,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -15,234 +15,283 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TP.ConcurrentProgramming.Data {
-  internal class DataImplementation : DataAbstractAPI {
-    #region ctor
-        
-    public DataImplementation() {
-        MoveTaskTokenSource = new CancellationTokenSource();
-        MoveTask = Task.Run(() => MoveAsync(MoveTaskTokenSource.Token));
-    }
+namespace TP.ConcurrentProgramming.Data
+{
+    internal class DataImplementation : DataAbstractAPI
+    {
+        #region Fields
 
-    #endregion ctor
+        private bool Disposed = false;
+        private readonly List<Thread> BallThreads = new();
+        private readonly object _lock = new object();
+        private List<Ball> BallsList = new();
 
-    private const double TableWidth = 400.0;
-    private const double TableHeight = 400.0;
-    private const double BallRadius = 10.0;
-    double[] MassValues = [1.0, 2.5, 5.0];
+        private const double BallRadius = 10.0;
+        double[] MassValues = [1.0, 2.5, 5.0];
 
+        #endregion Fields
 
-    #region DataAbstractAPI
+        #region ctor
 
-    public override void Start(int numberOfBalls, Action<IVector, IBall> upperLayerHandler) {
-      if (Disposed)
-        throw new ObjectDisposedException(nameof(DataImplementation));
-      if (upperLayerHandler == null)
-        throw new ArgumentNullException(nameof(upperLayerHandler));
-      Random random = new Random();
+        public DataImplementation()
+        {
+        }
 
-      lock (BallsList) {
-        for (int i = 0; i < numberOfBalls; i++) {
-            Vector startingPosition = new(random.Next(10, (int)TableWidth - 10), random.Next(10, (int)TableHeight - 10));
+        #endregion ctor
 
-            double velocity = random.NextDouble() * 3 - 1;
-            double angle = 2 * Math.PI * random.NextDouble();
+        #region DataAbstractAPI
 
-            Vector startingVelocity = new(velocity * Math.Cos(angle), velocity * Math.Sin(angle));
+        public override void Start(int numberOfBalls, Action<IVector, IBall> upperLayerHandler)
+        {
+            if (Disposed)
+                throw new ObjectDisposedException(nameof(DataImplementation));
+            if (upperLayerHandler == null)
+                throw new ArgumentNullException(nameof(upperLayerHandler));
+
+            Random random = new Random();
+
+            for (int i = 0; i < numberOfBalls; i++)
+            {
+                Vector startingPosition = new Vector(
+                    random.Next(10, 390),
+                    random.Next(10, 390)
+                );
+
+                Vector velocity = new Vector(
+                    random.NextDouble() * 3 - 1,
+                    random.NextDouble() * 3 - 1
+                );
+                double Mass = MassValues[random.Next(MassValues.Length)];
+
+                Ball newBall = new Ball(startingPosition, velocity, Mass, BallRadius * 2.0);
+                upperLayerHandler(startingPosition, newBall);
+
+                lock (_lock)
+                {
+                    BallsList.Add(newBall);
+                }
+
+                var worker = new BallWorker(newBall, _lock, BallsList, () => Disposed);
+                Thread thread = new Thread(worker.Run);
+                BallThreads.Add(thread);
+                thread.Start();
+            }
+        }
+
+        public override void AddBall(Action<IVector, IBall> upperLayerHandler)
+        {
+            if (Disposed)
+                throw new ObjectDisposedException(nameof(DataImplementation));
+            if (upperLayerHandler == null)
+                throw new ArgumentNullException(nameof(upperLayerHandler));
+
+            Random random = new Random();
+
+            Vector startingPosition = new Vector(
+                random.Next(10, 390),
+                random.Next(10, 390)
+            );
+
+            Vector velocity = new Vector(
+                random.NextDouble() * 3 - 1,
+                random.NextDouble() * 3 - 1
+            );
 
             double Mass = MassValues[random.Next(MassValues.Length)];
 
-            Ball newBall = new(startingPosition, startingVelocity, Mass, BallRadius * 2.0);
+            Ball newBall = new Ball(startingPosition, velocity, Mass, BallRadius * 2.0);
             upperLayerHandler(startingPosition, newBall);
-            BallsList.Add(newBall);
+
+            lock (_lock)
+            {
+                BallsList.Add(newBall);
+            }
+
+            var worker = new BallWorker(newBall, _lock, BallsList, () => Disposed);
+            Thread thread = new Thread(worker.Run);
+            BallThreads.Add(thread);
+            thread.Start();
         }
-        
-      }
-    }
-    
-    public override void AddBall(Action<IVector, IBall> upperLayerHandler) {
-        if (Disposed)
-            throw new ObjectDisposedException(nameof(DataImplementation));
-        if (upperLayerHandler == null)
-            throw new ArgumentNullException(nameof(upperLayerHandler));
 
-        Random random = new Random();
-
-        Vector startingPosition = new(random.Next(10, 390), random.Next(10, 390));
-        Vector startingVelocity = new(random.NextDouble() * 3 - 1, random.NextDouble() * 3 - 1);
-
-        double Mass = MassValues[random.Next(MassValues.Length)];
-
-        Ball newBall = new(startingPosition, startingVelocity, Mass, BallRadius * 2.0);
-        upperLayerHandler(startingPosition, newBall);
-
-        lock (BallsList) {
-            BallsList.Add(newBall);
-        }
-    }
-
-        public override void RemoveBall() {
+        public override void RemoveBall()
+        {
             if (Disposed)
                 throw new ObjectDisposedException(nameof(DataImplementation));
-            if (BallsList.Count == 0)
-                throw new InvalidOperationException("no balls to remove");
-            lock (BallsList) {
-                if (BallsList.Count > 0) {
+
+            lock (_lock)
+            {
+                if (BallsList.Count > 0)
+                {
                     BallsList.RemoveAt(BallsList.Count - 1);
                 }
             }
-        }
-
-        private async Task MoveAsync(CancellationToken token) {
-            try {
-                while (!token.IsCancellationRequested) {
-                    lock (BallsList) {
-                        Move();
-                    }
-
-                    await Task.Delay(16, token);
-                }
-            }
-            catch (TaskCanceledException) { }
         }
 
         #endregion DataAbstractAPI
 
         #region IDisposable
 
-        protected void Dispose(bool disposing) {
-            if (!Disposed) {
-                if (disposing) {
-                    MoveTaskTokenSource?.Cancel();
-                    MoveTask?.Wait();
-                    MoveTaskTokenSource?.Dispose();
+        protected void Dispose(bool disposing)
+        {
+            if (!Disposed)
+            {
+                if (disposing)
+                {
+                    Disposed = true;
 
-                    lock (BallsList) {
+                    foreach (var thread in BallThreads)
+                        thread.Join();
+
+                    lock (_lock)
+                    {
                         BallsList.Clear();
                     }
                 }
-                Disposed = true;
             }
         }
 
+        public override void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
 
-        public override void Dispose() {
-      // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-      Dispose(disposing: true);
-      GC.SuppressFinalize(this);
-    }
+        #endregion IDisposable
 
-    #endregion IDisposable
+        #region BallWorker
 
-    #region private
+        private class BallWorker
+        {
+            private readonly Ball _ball;
+            private readonly object _lock;
+            private readonly List<Ball> _ballsList;
+            private readonly Func<bool> _isDisposed;
+            private const double BallRadius = 10.0;
+            private const double TableWidth = 400.0;
+            private const double TableHeight = 400.0;
 
-    //private bool disposedValue;
-    private bool Disposed = false;
-
-    private Random RandomGenerator = new();
-    private List<Ball> BallsList = [];
-        private Task? MoveTask;
-        private CancellationTokenSource MoveTaskTokenSource;
-
-
-        private void Move() {
-            foreach (Ball ball in BallsList) {
-                ball.Move(new Vector(ball.Velocity.x, ball.Velocity.y));
-
-                double xPosition = ball.Position.x;
-                double yPosition = ball.Position.y;
-
-                double xVelocity = ball.Velocity.x;
-                double yVelocity = ball.Velocity.y;
-
-                if ((xPosition - BallRadius <= 0 && xVelocity < 0) || xPosition + BallRadius >= TableWidth && xVelocity > 0) {
-                    xVelocity = -xVelocity;
-                }
-
-                if ((yPosition - BallRadius <= 0 && yVelocity < 0) || yPosition + BallRadius >= TableHeight && yVelocity > 0) {
-                    yVelocity = -yVelocity;
-                }
-
-                double newX = xPosition + xVelocity;
-                double newY = yPosition + yVelocity;
-
-                ball.Velocity = new Vector(xVelocity, yVelocity);
-                ball.Move(new Vector(newX - xPosition, newY - yPosition));
+            public BallWorker(Ball ball, object lockObject, List<Ball> ballsList, Func<bool> isDisposed)
+            {
+                _ball = ball;
+                _lock = lockObject;
+                _ballsList = ballsList;
+                _isDisposed = isDisposed;
             }
 
-            for (int i = 0; i < BallsList.Count; i++) {
-                for (int j = i + 1; j < BallsList.Count; j++) {
-                    Ball Ball1 = BallsList[i];
-                    Ball Ball2 = BallsList[j];
+            public void Run()
+            {
+                while (!_isDisposed())
+                {
+                    lock (_lock)
+                    {
+                        UpdatePosition();
+                        HandleCollisions();
+                    }
+                    Thread.Sleep(16);
+                }
+            }
 
-                    Vector Position1 = Ball1.Position;
-                    Vector Position2 = Ball2.Position;
-                    Vector Delta = Position1 - Position2;
-                    double Distance = Delta.Length;
+            private void UpdatePosition()
+            {
+                Vector position = (Vector)_ball.Position;
+                Vector velocity = (Vector)_ball.Velocity;
 
-                    if (Distance < (Ball1.Diameter + Ball2.Diameter) / 2.0 && Distance > 0) {
-                        Vector Velocity1 = (Vector)Ball1.Velocity;
-                        Vector Velocity2 = (Vector)Ball2.Velocity;
+                double x = position.x;
+                double y = position.y;
+                double vx = velocity.x;
+                double vy = velocity.y;
 
-                        double Mass1 = Ball1.Mass;
-                        double Mass2 = Ball2.Mass;
+                if ((x - BallRadius <= 0 && vx < 0) || (x + BallRadius >= TableWidth && vx > 0))
+                {
+                    vx = -vx;
+                }
 
-                        Vector Normal = Delta.Normalize();
-                        Vector Tangent = new Vector(-Normal.y, Normal.x);
+                if ((y - BallRadius <= 0 && vy < 0) || (y + BallRadius >= TableHeight && vy > 0))
+                {
+                    vy = -vy;
+                }
 
-                        double Velocity1Normal = Normal.Dot(Velocity1);
-                        double Velocity2Normal = Normal.Dot(Velocity2);
+                _ball.Velocity = new Vector(vx, vy);
+                _ball.Move(new Vector(vx, vy));
+            }
 
-                        double Velocity1Tangent = Tangent.Dot(Velocity1);
-                        double Velocity2Tangent = Tangent.Dot(Velocity2);
+            private void HandleCollisions()
+            {
+                foreach (var other in _ballsList)
+                {
+                    if (other == _ball)
+                        continue;
 
-                        double newVelocity1Normal = (Velocity1Normal * (Mass1 - Mass2) + 2 * Mass2 * Velocity2Normal) / (Mass1 + Mass2);
-                        double newVelocity2Normal = (Velocity2Normal * (Mass2 - Mass1) + 2 * Mass1 * Velocity1Normal) / (Mass1 + Mass2);
+                    Vector pos1 = _ball.Position;
+                    Vector pos2 = other.Position;
+                    Vector delta = pos1 - pos2;
+                    double distance = delta.Length;
 
-                        Vector newVelocity1NormalVector = Normal * newVelocity1Normal;
-                        Vector newVelocity2NormalVector = Normal * newVelocity2Normal;
+                    if (distance < (_ball.Diameter + other.Diameter) / 2.0 && distance > 0)
+                    {
+                        Vector vel1 = (Vector)_ball.Velocity;
+                        Vector vel2 = (Vector)other.Velocity;
 
-                        Vector newVelocity1TangentVector = Tangent * Velocity1Tangent;
-                        Vector newVelocity2TangentVector = Tangent * Velocity2Tangent;
+                        double mass1 = _ball.Mass;
+                        double mass2 = other.Mass;
 
-                        Ball1.Velocity = newVelocity1NormalVector + newVelocity1TangentVector;
-                        Ball2.Velocity = newVelocity2NormalVector + newVelocity2TangentVector;
+                        Vector normal = delta.Normalize();
+                        Vector tangent = new Vector(-normal.y, normal.x);
 
-                        double Overlap = (Ball1.Diameter + Ball2.Diameter) / 2.0 - Distance;
-                        Vector correction = Normal * (Overlap / 2.0);
+                        double vel1Normal = normal.Dot(vel1);
+                        double vel2Normal = normal.Dot(vel2);
+                        double vel1Tangent = tangent.Dot(vel1);
+                        double vel2Tangent = tangent.Dot(vel2);
 
-                        Ball1.Move(correction);
-                        Ball2.Move(new Vector(-correction.x, -correction.y));
+                        double newVel1Normal = (vel1Normal * (mass1 - mass2) + 2 * mass2 * vel2Normal) / (mass1 + mass2);
+                        double newVel2Normal = (vel2Normal * (mass2 - mass1) + 2 * mass1 * vel1Normal) / (mass1 + mass2);
+
+                        Vector newVel1NormalVec = normal * newVel1Normal;
+                        Vector newVel2NormalVec = normal * newVel2Normal;
+
+                        Vector newVel1 = newVel1NormalVec + tangent * vel1Tangent;
+                        Vector newVel2 = newVel2NormalVec + tangent * vel2Tangent;
+
+                        _ball.Velocity = newVel1;
+                        other.Velocity = newVel2;
+
+                        // Korekta pozycji
+                        double overlap = (_ball.Diameter + other.Diameter) / 2.0 - distance;
+                        Vector correction = normal * (overlap / 2.0);
+
+                        _ball.Move(correction);
+                        other.Move(new Vector(-correction.x, -correction.y));
                     }
                 }
             }
         }
 
-
-        #endregion private
+        #endregion BallWorker
 
         #region TestingInfrastructure
 
         [Conditional("DEBUG")]
-    internal void CheckBallsList(Action<IEnumerable<IBall>> returnBallsList)
-    {
-            lock (BallsList) {
+        internal void CheckBallsList(Action<IEnumerable<IBall>> returnBallsList)
+        {
+            lock (BallsList)
+            {
                 returnBallsList(BallsList);
             }
         }
 
-    [Conditional("DEBUG")]
-    internal void CheckNumberOfBalls(Action<int> returnNumberOfBalls)
-    {
-      returnNumberOfBalls(BallsList.Count);
-    }
+        [Conditional("DEBUG")]
+        internal void CheckNumberOfBalls(Action<int> returnNumberOfBalls)
+        {
+            returnNumberOfBalls(BallsList.Count);
+        }
 
-    [Conditional("DEBUG")]
-    internal void CheckObjectDisposed(Action<bool> returnInstanceDisposed)
-    {
-      returnInstanceDisposed(Disposed);
-    }
+        [Conditional("DEBUG")]
+        internal void CheckObjectDisposed(Action<bool> returnInstanceDisposed)
+        {
+            returnInstanceDisposed(Disposed);
+        }
 
-    #endregion TestingInfrastructure
-  }
+        #endregion TestingInfrastructure
+    }
 }
