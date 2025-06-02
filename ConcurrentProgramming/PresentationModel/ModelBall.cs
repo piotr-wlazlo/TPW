@@ -21,10 +21,11 @@ namespace TP.ConcurrentProgramming.Presentation.Model
   {
     public ModelBall(double top, double left, LogicIBall underneathBall)
     {
-      TopBackingField = top;
-      LeftBackingField = left;
-      underneathBall.NewPositionNotification += NewPositionNotification;
+        TopBackingField = top;
+        LeftBackingField = left;
+        underneathBall.NewPositionNotification += NewPositionNotification;
         Mass = underneathBall.Mass;
+        BallID = underneathBall.BallID;
     }
 
     #region IBall
@@ -56,6 +57,7 @@ namespace TP.ConcurrentProgramming.Presentation.Model
     public double Diameter { get; init; } = 0;
 
     public double Mass { get; }
+    public int BallID { get; }
 
     #region INotifyPropertyChanged
 

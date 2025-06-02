@@ -17,6 +17,7 @@ namespace TP.ConcurrentProgramming.Data {
             Velocity = initialVelocity;
             Mass = mass;
             Diameter = diameter;
+            BallID = Interlocked.Increment(ref NextBallID);
         }
 
         #endregion ctor
@@ -26,12 +27,15 @@ namespace TP.ConcurrentProgramming.Data {
         public event EventHandler<IVector>? NewPositionNotification;
 
         public IVector Velocity { get; set; }
+        public int BallID { get; }
+
 
         #endregion IBall
 
         #region private
 
         private Vector position;
+        private static int NextBallID = 0;
 
         private void RaiseNewPositionChangeNotification() {
             NewPositionNotification?.Invoke(this, position);
@@ -47,7 +51,7 @@ namespace TP.ConcurrentProgramming.Data {
         public Vector Position => position;
 
         IVector IBall.Position => Position;
-                public double Mass { get; }
+        public double Mass { get; }
         public double Diameter { get; }
     }
 }

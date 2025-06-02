@@ -32,23 +32,30 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Ellipse Width="{Binding Diameter}" Height="{Binding Diameter}">
-                                <Ellipse.Style>
-                                    <Style TargetType="Ellipse">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Mass}" Value="1.0">
-                                                <Setter Property="Fill" Value="LightPink"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Mass}" Value="2.5">
-                                                <Setter Property="Fill" Value="HotPink"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Mass}" Value="5.0">
-                                                <Setter Property="Fill" Value="DeepPink"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Ellipse.Style>
-                            </Ellipse>
+                            <Grid>
+                                <Ellipse Width="{Binding Diameter}" Height="{Binding Diameter}">
+                                    <Ellipse.Style>
+                                        <Style TargetType="Ellipse">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Mass}" Value="1.0">
+                                                    <Setter Property="Fill" Value="LightPink"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Mass}" Value="2.5">
+                                                    <Setter Property="Fill" Value="HotPink"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Mass}" Value="5.0">
+                                                    <Setter Property="Fill" Value="DeepPink"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                                <TextBlock Text="{Binding ID}" 
+                                         HorizontalAlignment="Center" 
+                                         VerticalAlignment="Center"
+                                         Foreground="Black"
+                                         FontWeight="Bold"/>
+                            </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                     <ItemsControl.ItemContainerStyle>

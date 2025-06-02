@@ -21,6 +21,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test {
             public double Mass { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
             public double Diameter { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+            public int BallID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
             public event EventHandler<Data.IVector>? NewPositionNotification;
         }
 

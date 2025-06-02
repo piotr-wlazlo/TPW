@@ -30,6 +30,8 @@ namespace TP.ConcurrentProgramming.Presentation.Model.Test
             public double Mass { get => throw new NotImplementedException(); } 
             
             public double Diameter { get => throw new NotImplementedException(); }
+
+            public int BallID { get => throw new NotImplementedException(); }
         }
 
         

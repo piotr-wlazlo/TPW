@@ -171,8 +171,10 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel.Test
 
         public double Mass => throw new NotImplementedException();
 
+        public int BallID => throw new NotImplementedException();
+        
         #endregion IBall
-      }
+        }
 
       #endregion private
     }

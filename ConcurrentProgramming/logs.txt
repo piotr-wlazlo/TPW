@@ -1,0 +1,62 @@
+[198 ms] starting with 1 balls
+[9054 ms] added ball 2, x position = (363, y position = 291), x velocity = (0,04802468962364825, y velocity = 1,9464928365297993)
+[9607 ms] added ball 3, x position = (233, y position = 242), x velocity = (-0,6518559199950629, y velocity = 0,5992937988343643)
+[9773 ms] added ball 4, x position = (11, y position = 184), x velocity = (-0,8403711940486284, y velocity = -0,9468349795447882)
+[9932 ms] added ball 5, x position = (345, y position = 333), x velocity = (0,5970240158966424, y velocity = -0,882740379177798)
+[10072 ms] added ball 6, x position = (324, y position = 170), x velocity = (1,802047609817325, y velocity = 0,04944071059894495)
+[10225 ms] added ball 7, x position = (229, y position = 270), x velocity = (1,9974548112294466, y velocity = -0,7776914718325896)
+[10243 ms] ball 1, x position = 103,87175375882185, y position = 182,9801695415305, x velocity = -1,591450250588128, y velocity = 1,6590568289231724
+[10243 ms] ball 2, x position = 365,44925917080735, y position = 390,27113466301904, x velocity = 0,04802468962364825, y velocity = 1,9464928365297993
+[10243 ms] ball 3, x position = 215,60960227955152, y position = 257,24082995240207, x velocity = -0,5026813864271455, y velocity = 0,831115653254321
+[10243 ms] ball 4, x position = 23,605567910729434, y position = 166,01013538864927, x velocity = 0,8403711940486284, y velocity = -0,9468349795447882
+[10243 ms] ball 5, x position = 352,76131220665627, y position = 321,52437507068873, x velocity = 0,5970240158966424, y velocity = -0,882740379177798
+[10243 ms] ball 6, x position = 338,4163808785388, y position = 170,39552568479166, x velocity = 1,802047609817325, y velocity = 0,04944071059894495
+[10243 ms] ball 7, x position = 232,4556026548261, y position = 268,0210095128848, x velocity = 1,8482802776615288, y velocity = -1,0095133262525462
+[10382 ms] added ball 8, x position = (186, y position = 157), x velocity = (-0,20822715428556604, y velocity = 0,9811008838626014)
+[10532 ms] added ball 9, x position = (365, y position = 83), x velocity = (1,7291336831819946, y velocity = -0,16918267584402547)
+[10689 ms] added ball 10, x position = (303, y position = 134), x velocity = (1,1668971411591622, y velocity = 1,4455962255196653)
+[20264 ms] ball 1, x position = 102,35591844697416, y position = 275,0535206042535, x velocity = -1,0414346565812276, y velocity = 0,9261443385027761
+[20264 ms] ball 2, x position = 353,6664630941957, y position = 24,25288852275628, x velocity = 1,6494070380300514, y velocity = -3,4774898269126506
+[20264 ms] ball 3, x position = 29,201657391985286, y position = 241,13987125046424, x velocity = -0,6437606768376787, y velocity = -0,3923114797750796
+[20264 ms] ball 4, x position = 349,0502443814142, y position = 68,92374699671771, x velocity = -1,573043940449677, y velocity = 1,0374331453481291
+[20264 ms] ball 5, x position = 266,2889560725582, y position = 275,15504229014243, x velocity = 4,196021508752816, y velocity = 0,3220590355813022
+[20264 ms] ball 6, x position = 236,91658480943613, y position = 116,53583459369568, x velocity = -0,33649566108572193, y velocity = -2,1735004866880856
+[20264 ms] ball 7, x position = 215,54436635721504, y position = 72,276498447677, x velocity = -0,32660643328584094, y velocity = 0,7625656667980308
+[20264 ms] ball 8, x position = 69,96007064801762, y position = 375,83789346721716, x velocity = 1,0208714261547853, y velocity = -1,1146357127812132
+[20264 ms] ball 9, x position = 226,66930534544008, y position = 21,75587134446218, x velocity = 1,7291336831819946, y velocity = -0,16918267584402547
+[20264 ms] ball 10, x position = 329,6999749192194, y position = 389,76614718910355, x velocity = 0,7578306497912767, y velocity = -0,4964371813670653
+[30295 ms] ball 1, x position = 234,54613585006993, y position = 14,677854471990766, x velocity = 0,5168519278841827, y velocity = -1,6826655037022291
+[30295 ms] ball 2, x position = 277,10084213953314, y position = 194,396405314059, x velocity = -2,873468524690935, y velocity = -2,9440597438642593
+[30295 ms] ball 3, x position = 164,83041074867282, y position = 31,010273670004807, x velocity = 1,0269904663868528, y velocity = -0,3549830479215229
+[30295 ms] ball 4, x position = 301,5761345326592, y position = 248,23749238283995, x velocity = 1,0529654309569516, y velocity = -0,36255290771016724
+[30295 ms] ball 5, x position = 329,22927870385075, y position = 372,0948120001065, x velocity = -4,196021508752816, y velocity = -0,3220590355813022
+[30295 ms] ball 6, x position = 50,33278512428079, y position = 251,22342752888255, x velocity = -1,9028294535283776, y velocity = 0,3410832481097589
+[30295 ms] ball 7, x position = 116,45069923578112, y position = 186,52688226358563, x velocity = -0,47928039193854516, y velocity = 0,06574898475199785
+[30295 ms] ball 8, x position = 239,54885394752847, y position = 362,47212531622273, x velocity = -1,1723319307480375, y velocity = 0,5191649589209242
+[30295 ms] ball 9, x position = 138,6288956512318, y position = 123,67635533883318, x velocity = 0,6967348840803613, y velocity = 1,5521266207649558
+[30295 ms] ball 10, x position = 381,1211269623895, y position = 153,83870496833777, x velocity = -1,4419172434791294, y velocity = -0,7470470936730582
+[37933 ms] removed ball 10, x position = (183,07344387968362, y position = 115,19168402365717), x velocity = (0,037253919361287774, y velocity = 0,41660981675908965)
+[38114 ms] removed ball 9, x position = (312,25189784909344, y position = 335,01382747946207), x velocity = (0,3660724187752566, y velocity = -0,34201505244025643)
+[38277 ms] removed ball 8, x position = (86,7441173933998, y position = 117,67552935884011), x velocity = (3,4538577799781405, y velocity = 1,7145034735081328)
+[38409 ms] removed ball 7, x position = (57,01993063540155, y position = 207,6980553537268), x velocity = (0,47928039193854516, y velocity = 0,06574898475199785)
+[40321 ms] ball 1, x position = 61,7698628910544, y position = 226,2834419793154, x velocity = -0,2839123259006552, y velocity = -0,9519200453612608
+[40321 ms] ball 2, x position = 145,14067669532437, y position = 116,80271606665798, x velocity = 1,4747507991568656, y velocity = 0,11865948056993539
+[40321 ms] ball 3, x position = 205,91002940414677, y position = 130,40552708803096, x velocity = -1,0269904663868528, y velocity = 0,3549830479215229
+[40321 ms] ball 4, x position = 368,04019226532404, y position = 97,81049685289996, x velocity = -0,9213214967787998, y velocity = -0,394730708400612
+[40321 ms] ball 5, x position = 139,1416700285176, y position = 266,13464471400823, x velocity = -1,6040171786809383, y velocity = -2,376667250549781
+[40321 ms] ball 6, x position = 347,60841429181744, y position = 381,53482173434566, x velocity = 3,284143480358279, y velocity = 4,012467540614253
+[50351 ms] ball 1, x position = 239,97599323346105, y position = 228,60512065138258, x velocity = -1,8739057325333803, y velocity = -1,6204459241569877
+[50351 ms] ball 2, x position = 237,37428862675017, y position = 263,30533341574625, x velocity = -1,9660960625668256, y velocity = -1,1285099840606165
+[50351 ms] ball 3, x position = 247,7735167878564, y position = 352,7224002145007, x velocity = 1,350010723690381, y velocity = 0,6917234631733179
+[50351 ms] ball 4, x position = 188,13160650132733, y position = 164,69987098845615, x velocity = -0,3295484796676138, y velocity = 0,7195357621323867
+[50351 ms] ball 5, x position = 19,58371486753137, y position = 336,84055841008427, x velocity = 0,011472270292419456, y velocity = 0,63301711481604
+[50351 ms] ball 6, x position = 383,46441889524436, y position = 86,29386500393144, x velocity = 0,9104596496984227, y velocity = -3,7869023811377787
+[60370 ms] ball 1, x position = 245,53863179822517, y position = 298,67981948592734, x velocity = -0,9872126127355259, y velocity = 0,3123897522553023
+[60370 ms] ball 2, x position = 338,28714628767574, y position = 59,74053046075983, x velocity = -1,827279435224548, y velocity = 0,4271128205625856
+[60370 ms] ball 3, x position = 86,76076179367111, y position = 327,62044750837975, x velocity = -0,7505172412895065, y velocity = 0,9148757666166649
+[60370 ms] ball 4, x position = 342,18070505867763, y position = 29,413167137589287, x velocity = -1,732653700285202, y velocity = 1,027349235348751
+[60370 ms] ball 5, x position = 23,794038064849158, y position = 210,8701525616948, x velocity = 0,011472270292419456, y velocity = -0,63301711481604
+[60370 ms] ball 6, x position = 159,20877042368224, y position = 89,15316744974668, x velocity = 3,6318406742761966, y velocity = -1,8993807760603738
+[68892 ms] stopped simulation[0 ms] stopped simulation[0 ms] stopped simulation[0 ms] starting with 10 balls
+[4 ms] stopped simulation[0 ms] stopped simulation[0 ms] stopped simulation[0 ms] stopped simulation[0 ms] starting with 10 balls
+[3 ms] stopped simulation

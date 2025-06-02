@@ -14,6 +14,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic {
       ball.NewPositionNotification += RaisePositionChangeEvent;
       Mass = ball.Mass;
       Diameter = ball.Diameter;
+      BallID = ball.BallID;
     }
 
     #region IBall
@@ -22,6 +23,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic {
 
     public double Mass { get; }
     public double Diameter { get; }
+    public int BallID { get; }
 
     #endregion IBall
 

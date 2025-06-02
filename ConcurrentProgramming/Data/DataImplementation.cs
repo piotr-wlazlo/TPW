@@ -28,11 +28,17 @@ namespace TP.ConcurrentProgramming.Data {
         private const double BallRadius = 10.0;
         double[] MassValues = [1.0, 2.5, 5.0];
 
+        private Thread LogThread;
+        private bool LogThreadRunning = false;
+        private readonly string LogFilePath = "../../../../logs.txt";
+        private readonly DateTime StartTime;
+
         #endregion Fields
 
         #region ctor
 
         public DataImplementation() {
+            StartTime = DateTime.Now;
         }
 
         #endregion ctor
@@ -46,6 +52,9 @@ namespace TP.ConcurrentProgramming.Data {
                 throw new ArgumentNullException(nameof(upperLayerHandler));
 
             Random random = new Random();
+
+            long StartMilliseconds = (long)(DateTime.Now - StartTime).TotalMilliseconds;
+            File.AppendAllText(LogFilePath, $"[{StartMilliseconds} ms] starting with {numberOfBalls} balls\n");
 
             for (int i = 0; i < numberOfBalls; i++) {
                 Vector startingPosition = new Vector(
@@ -70,6 +79,10 @@ namespace TP.ConcurrentProgramming.Data {
                 Thread thread = new Thread(Worker.Run);
                 BallWorkers.Add(Worker);
                 BallThreads.Add(thread);
+
+                LogThreadRunning = true;
+                LogThread = new Thread(DiagnosticLog);
+                LogThread.Start();
                 thread.Start();
             }
         }
@@ -106,6 +119,9 @@ namespace TP.ConcurrentProgramming.Data {
             BallWorkers.Add(Worker);
             BallThreads.Add(thread);
             thread.Start();
+
+            long StartMilliseconds = (long)(DateTime.Now - StartTime).TotalMilliseconds;
+            File.AppendAllText(LogFilePath, $"[{StartMilliseconds} ms] added ball {newBall.BallID}, x position = ({startingPosition.x}, y position = {startingPosition.y}), x velocity = ({velocity.x}, y velocity = {velocity.y})\n");
         }
 
         public override void RemoveBall() {
@@ -114,10 +130,11 @@ namespace TP.ConcurrentProgramming.Data {
 
             BallWorker Worker = null;
             Thread BallThread = null;
+            Ball BallToRemove = null;
 
             lock (_lock) {
                 if (BallsList.Count > 0) {
-                    Ball BallToRemove = BallsList[BallsList.Count - 1];
+                    BallToRemove = BallsList[BallsList.Count - 1];
                     Worker = BallWorkers[BallWorkers.Count - 1];
                     BallThread = BallThreads[BallThreads.Count - 1];
 
@@ -131,6 +148,11 @@ namespace TP.ConcurrentProgramming.Data {
             if (Worker != null && BallThread != null) {
                 Worker.Stop();
                 BallThread.Join();
+
+                long StartMilliseconds = (long)(DateTime.Now - StartTime).TotalMilliseconds;
+                var position = BallToRemove.Position;
+                var velocity = BallToRemove.Velocity;
+                File.AppendAllText(LogFilePath, $"[{StartMilliseconds} ms] removed ball {BallToRemove.BallID}, x position = ({position.x}, y position = {position.y}), x velocity = ({velocity.x}, y velocity = {velocity.y})\n");
             }
         }
 
@@ -142,6 +164,9 @@ namespace TP.ConcurrentProgramming.Data {
             if (!Disposed) {
                 if (disposing) {
                     Disposed = true;
+
+                    long StartMilliseconds = (long)(DateTime.Now - StartTime).TotalMilliseconds;
+                    File.AppendAllText(LogFilePath, $"[{StartMilliseconds} ms] stopped simulation");
 
                     foreach (var Worker in BallWorkers) {
                         Worker.Stop();
@@ -156,6 +181,9 @@ namespace TP.ConcurrentProgramming.Data {
                         BallWorkers.Clear();
                         BallThreads.Clear();
                     }
+
+                    LogThreadRunning = false;
+                    LogThread?.Join();
                 }
             }
         }
@@ -168,6 +196,32 @@ namespace TP.ConcurrentProgramming.Data {
 
         #endregion IDisposable
 
+        #region Logging
+
+        private void DiagnosticLog() {
+            while (LogThreadRunning && !Disposed) {
+                Thread.Sleep(10000);
+
+                List<string> LogEntries = new();
+                DateTime now = DateTime.Now;
+                long StartMilliseconds = (long)(now - StartTime).TotalMilliseconds;
+
+                lock (_lock) {
+                    foreach (var ball in BallsList) {
+                        LogEntries.Add($"[{StartMilliseconds} ms] ball {ball.BallID}, x position = {ball.Position.x}, y position = {ball.Position.y}, x velocity = {ball.Velocity.x}, y velocity = {ball.Velocity.y}");
+                    }
+                }
+
+                try {
+                    File.AppendAllLines(LogFilePath, LogEntries);
+                }
+                catch (IOException) {
+                }
+            }
+        }
+
+        #endregion Logging
+
         #region BallWorker
 
         private class BallWorker {
@@ -179,6 +233,7 @@ namespace TP.ConcurrentProgramming.Data {
             private const double BallRadius = 10.0;
             private const double TableWidth = 400.0;
             private const double TableHeight = 400.0;
+            private DateTime LastLog = DateTime.Now;
 
             public BallWorker(Ball ball, object lockObject, List<Ball> ballsList, Func<bool> isDisposed) {
                 _ball = ball;
@@ -202,6 +257,10 @@ namespace TP.ConcurrentProgramming.Data {
             }
 
             private void UpdatePosition() {
+                DateTime now = DateTime.Now;
+                double TimeDifference = (now - LastLog).TotalSeconds;
+                LastLog = now;
+
                 Vector position = (Vector)_ball.Position;
                 Vector velocity = (Vector)_ball.Velocity;
 

@@ -16,6 +16,8 @@ namespace TP.ConcurrentProgramming.Presentation.Model {
     double Left { get; }
     double Diameter { get; }
     double Mass { get; }
+
+    int BallID { get; }
     }
 
   public abstract class ModelAbstractApi : IObservable<IBall>, IDisposable {

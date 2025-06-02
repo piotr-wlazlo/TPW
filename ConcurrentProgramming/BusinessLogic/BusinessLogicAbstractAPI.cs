@@ -62,5 +62,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic {
     event EventHandler<IPosition> NewPositionNotification;
     double Mass { get; }
     double Diameter { get; }
+    int BallID { get; }
+
     }
 }

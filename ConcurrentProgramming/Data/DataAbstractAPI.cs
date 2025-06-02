@@ -58,5 +58,6 @@ namespace TP.ConcurrentProgramming.Data {
     IVector Position { get; }
     double Mass { get; }
     double Diameter { get; }
+    int BallID { get; }
     }
 }
