@@ -41,9 +41,8 @@ namespace TP.ConcurrentProgramming.Data {
         private const double BallRadius = 10.0;
         double[] MassValues = [1.0, 2.5, 5.0];
 
-        private Thread LogThread;
-        private bool LogThreadRunning = false;
-        private readonly string LogFilePath = "../../../../logs.json";
+        private System.Timers.Timer LogTimer;
+        private readonly string LogFilePath = "../../../../DiagnosticLogs.json";
         private readonly DateTime StartTime;
 
         #endregion Fields
@@ -93,10 +92,13 @@ namespace TP.ConcurrentProgramming.Data {
                 thread.Start();
             }
 
-            if (LogThread == null) {
-                LogThreadRunning = true;
-                LogThread = new Thread(DiagnosticLog);
-                LogThread.Start();
+            lock (_lock) {
+                if (LogTimer == null) {
+                    LogTimer = new System.Timers.Timer(interval: 10000);
+                    LogTimer.Elapsed += (sender, e) => DiagnosticLog(null);
+                    LogTimer.AutoReset = true;
+                    LogTimer.Enabled = true;
+                }
             }
         }
 
@@ -132,24 +134,12 @@ namespace TP.ConcurrentProgramming.Data {
             BallWorkers.Add(Worker);
             BallThreads.Add(thread);
             thread.Start();
-
-            long Time = (long)(DateTime.Now - StartTime).TotalMilliseconds;
-            var entry = new LogEntry {
-                Time_ms = Time,
-                Message = "Ball added",
-                BallID = newBall.BallID,
-                BallMass = newBall.Mass,
-                x_position = newBall.Position.x,
-                y_position = newBall.Position.y,
-                x_velocity = newBall.Velocity.x,
-                y_velocity = newBall.Velocity.y,
-            };
-            File.AppendAllText(LogFilePath, JsonConvert.SerializeObject(entry) + Environment.NewLine + Environment.NewLine);
         }
 
         public override void RemoveBall() {
-            if (Disposed)
+            if (Disposed) {
                 throw new ObjectDisposedException(nameof(DataImplementation));
+            }
 
             BallWorker Worker = null;
             Thread BallThread = null;
@@ -171,19 +161,6 @@ namespace TP.ConcurrentProgramming.Data {
             if (Worker != null && BallThread != null) {
                 Worker.Stop();
                 BallThread.Join();
-
-                long Time = (long)(DateTime.Now - StartTime).TotalMilliseconds;
-                var entry = new LogEntry {
-                    Time_ms = Time,
-                    Message = "Ball removed",
-                    BallID = BallToRemove.BallID,
-                    BallMass = BallToRemove.Mass,
-                    x_position = BallToRemove.Position.x,
-                    y_position = BallToRemove.Position.y,
-                    x_velocity = BallToRemove.Velocity.x,
-                    y_velocity = BallToRemove.Velocity.y,
-                };
-                File.AppendAllText(LogFilePath, JsonConvert.SerializeObject(entry) + Environment.NewLine + Environment.NewLine);
             }
         }
 
@@ -194,7 +171,11 @@ namespace TP.ConcurrentProgramming.Data {
         protected void Dispose(bool disposing) {
             if (!Disposed) {
                 if (disposing) {
-                    Disposed = true;
+                    lock (_lock) {
+                        Disposed = true;
+                        LogTimer?.Dispose();
+                        LogTimer = null;
+                    }
 
                     foreach (var Worker in BallWorkers) {
                         Worker.Stop();
@@ -209,9 +190,6 @@ namespace TP.ConcurrentProgramming.Data {
                         BallWorkers.Clear();
                         BallThreads.Clear();
                     }
-
-                    LogThreadRunning = false;
-                    LogThread?.Join();
                 }
             }
         }
@@ -226,37 +204,38 @@ namespace TP.ConcurrentProgramming.Data {
 
         #region Logging
 
-        private void DiagnosticLog() {
-            while (LogThreadRunning && !Disposed) {
-                Thread.Sleep(10000);
+        private void DiagnosticLog(object state) {
+            List<string> LogEntries = new();
+            DateTime now = DateTime.Now;
+            long Time = (long)(now - StartTime).TotalMilliseconds;
 
-                DateTime now = DateTime.Now;
-                long Time = (long)(now - StartTime).TotalMilliseconds;
-                List<string> LogEntries = new();
-
-                lock (_lock) {
-                    foreach (var ball in BallsList) {
-                        var entry = new LogEntry {
-                            Time_ms = Time,
-                            Message = "Periodic update",
-                            BallID = ball.BallID,
-                            BallMass = ball.Mass,
-                            x_position = ball.Position.x,
-                            y_position = ball.Position.y,
-                            x_velocity = ball.Velocity.x,
-                            y_velocity = ball.Velocity.y
-                        };
-                        LogEntries.Add(JsonConvert.SerializeObject(entry));
-                    }
+            lock (_lock) {
+                if (Disposed) {
+                    return;
                 }
 
-                try {
-                    LogEntries.Add("");
-                    File.AppendAllLines(LogFilePath, LogEntries);
+                foreach (var ball in BallsList) {
+                    var entry = new LogEntry
+                    {
+                        Time_ms = Time,
+                        Message = "Periodic update",
+                        BallID = ball.BallID,
+                        BallMass = ball.Mass,
+                        x_position = ball.Position.x,
+                        y_position = ball.Position.y,
+                        x_velocity = ball.Velocity.x,
+                        y_velocity = ball.Velocity.y
+                    };
+                    LogEntries.Add(JsonConvert.SerializeObject(entry));
                 }
-                catch (IOException e) {
-                    Debug.WriteLine($"Failed to log: {e.Message}");
-                }
+            }
+
+            try {
+                LogEntries.Add("");
+                File.AppendAllLines(LogFilePath, LogEntries);
+            }
+            catch (IOException e) {
+                Debug.WriteLine($"Failed to log: {e.Message}");
             }
         }
 
@@ -273,7 +252,6 @@ namespace TP.ConcurrentProgramming.Data {
             private const double BallRadius = 10.0;
             private const double TableWidth = 400.0;
             private const double TableHeight = 400.0;
-            private DateTime LastLog = DateTime.Now;
 
             public BallWorker(Ball ball, object lockObject, List<Ball> ballsList, Func<bool> isDisposed) {
                 _ball = ball;
