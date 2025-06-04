@@ -92,13 +92,11 @@ namespace TP.ConcurrentProgramming.Data {
                 thread.Start();
             }
 
-            lock (_lock) {
-                if (LogTimer == null) {
-                    LogTimer = new System.Timers.Timer(interval: 10000);
-                    LogTimer.Elapsed += (sender, e) => DiagnosticLog(null);
-                    LogTimer.AutoReset = true;
-                    LogTimer.Enabled = true;
-                }
+            if (LogTimer == null) {
+                LogTimer = new System.Timers.Timer(interval: 10000);
+                LogTimer.Elapsed += (sender, e) => DiagnosticLog(null);
+                LogTimer.AutoReset = true;
+                LogTimer.Enabled = true;
             }
         }
 
