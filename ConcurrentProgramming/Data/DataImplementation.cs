@@ -8,6 +8,7 @@
 //
 //_____________________________________________________________________________________________________________________________________
 
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
@@ -16,6 +17,18 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace TP.ConcurrentProgramming.Data {
+
+    [Serializable] 
+    public class LogEntry {
+        public long Time_ms { get; set; }
+        public string Message { get; set; }
+        public int BallID { get; set; }
+        public double BallMass { get; set; }
+        public double x_position { get; set; }
+        public double y_position { get; set; }
+        public double x_velocity { get; set; }
+        public double y_velocity { get; set; }
+    }
     internal class DataImplementation : DataAbstractAPI {
         #region Fields
 
@@ -30,7 +43,7 @@ namespace TP.ConcurrentProgramming.Data {
 
         private Thread LogThread;
         private bool LogThreadRunning = false;
-        private readonly string LogFilePath = "../../../../logs.txt";
+        private readonly string LogFilePath = "../../../../logs.json";
         private readonly DateTime StartTime;
 
         #endregion Fields
@@ -53,8 +66,6 @@ namespace TP.ConcurrentProgramming.Data {
 
             Random random = new Random();
 
-            long StartMilliseconds = (long)(DateTime.Now - StartTime).TotalMilliseconds;
-            File.AppendAllText(LogFilePath, $"[{StartMilliseconds} ms] starting with {numberOfBalls} balls\n");
 
             for (int i = 0; i < numberOfBalls; i++) {
                 Vector startingPosition = new Vector(
@@ -79,11 +90,13 @@ namespace TP.ConcurrentProgramming.Data {
                 Thread thread = new Thread(Worker.Run);
                 BallWorkers.Add(Worker);
                 BallThreads.Add(thread);
+                thread.Start();
+            }
 
+            if (LogThread == null) {
                 LogThreadRunning = true;
                 LogThread = new Thread(DiagnosticLog);
                 LogThread.Start();
-                thread.Start();
             }
         }
 
@@ -120,8 +133,18 @@ namespace TP.ConcurrentProgramming.Data {
             BallThreads.Add(thread);
             thread.Start();
 
-            long StartMilliseconds = (long)(DateTime.Now - StartTime).TotalMilliseconds;
-            File.AppendAllText(LogFilePath, $"[{StartMilliseconds} ms] added ball {newBall.BallID}, x position = ({startingPosition.x}, y position = {startingPosition.y}), x velocity = ({velocity.x}, y velocity = {velocity.y})\n");
+            long Time = (long)(DateTime.Now - StartTime).TotalMilliseconds;
+            var entry = new LogEntry {
+                Time_ms = Time,
+                Message = "Ball added",
+                BallID = newBall.BallID,
+                BallMass = newBall.Mass,
+                x_position = newBall.Position.x,
+                y_position = newBall.Position.y,
+                x_velocity = newBall.Velocity.x,
+                y_velocity = newBall.Velocity.y,
+            };
+            File.AppendAllText(LogFilePath, JsonConvert.SerializeObject(entry) + Environment.NewLine + Environment.NewLine);
         }
 
         public override void RemoveBall() {
@@ -149,10 +172,18 @@ namespace TP.ConcurrentProgramming.Data {
                 Worker.Stop();
                 BallThread.Join();
 
-                long StartMilliseconds = (long)(DateTime.Now - StartTime).TotalMilliseconds;
-                var position = BallToRemove.Position;
-                var velocity = BallToRemove.Velocity;
-                File.AppendAllText(LogFilePath, $"[{StartMilliseconds} ms] removed ball {BallToRemove.BallID}, x position = ({position.x}, y position = {position.y}), x velocity = ({velocity.x}, y velocity = {velocity.y})\n");
+                long Time = (long)(DateTime.Now - StartTime).TotalMilliseconds;
+                var entry = new LogEntry {
+                    Time_ms = Time,
+                    Message = "Ball removed",
+                    BallID = BallToRemove.BallID,
+                    BallMass = BallToRemove.Mass,
+                    x_position = BallToRemove.Position.x,
+                    y_position = BallToRemove.Position.y,
+                    x_velocity = BallToRemove.Velocity.x,
+                    y_velocity = BallToRemove.Velocity.y,
+                };
+                File.AppendAllText(LogFilePath, JsonConvert.SerializeObject(entry) + Environment.NewLine + Environment.NewLine);
             }
         }
 
@@ -164,9 +195,6 @@ namespace TP.ConcurrentProgramming.Data {
             if (!Disposed) {
                 if (disposing) {
                     Disposed = true;
-
-                    long StartMilliseconds = (long)(DateTime.Now - StartTime).TotalMilliseconds;
-                    File.AppendAllText(LogFilePath, $"[{StartMilliseconds} ms] stopped simulation");
 
                     foreach (var Worker in BallWorkers) {
                         Worker.Stop();
@@ -202,20 +230,32 @@ namespace TP.ConcurrentProgramming.Data {
             while (LogThreadRunning && !Disposed) {
                 Thread.Sleep(10000);
 
-                List<string> LogEntries = new();
                 DateTime now = DateTime.Now;
-                long StartMilliseconds = (long)(now - StartTime).TotalMilliseconds;
+                long Time = (long)(now - StartTime).TotalMilliseconds;
+                List<string> LogEntries = new();
 
                 lock (_lock) {
                     foreach (var ball in BallsList) {
-                        LogEntries.Add($"[{StartMilliseconds} ms] ball {ball.BallID}, x position = {ball.Position.x}, y position = {ball.Position.y}, x velocity = {ball.Velocity.x}, y velocity = {ball.Velocity.y}");
+                        var entry = new LogEntry {
+                            Time_ms = Time,
+                            Message = "Periodic update",
+                            BallID = ball.BallID,
+                            BallMass = ball.Mass,
+                            x_position = ball.Position.x,
+                            y_position = ball.Position.y,
+                            x_velocity = ball.Velocity.x,
+                            y_velocity = ball.Velocity.y
+                        };
+                        LogEntries.Add(JsonConvert.SerializeObject(entry));
                     }
                 }
 
                 try {
+                    LogEntries.Add("");
                     File.AppendAllLines(LogFilePath, LogEntries);
                 }
-                catch (IOException) {
+                catch (IOException e) {
+                    Debug.WriteLine($"Failed to log: {e.Message}");
                 }
             }
         }
@@ -257,10 +297,6 @@ namespace TP.ConcurrentProgramming.Data {
             }
 
             private void UpdatePosition() {
-                DateTime now = DateTime.Now;
-                double TimeDifference = (now - LastLog).TotalSeconds;
-                LastLog = now;
-
                 Vector position = (Vector)_ball.Position;
                 Vector velocity = (Vector)_ball.Velocity;
 
@@ -329,7 +365,7 @@ namespace TP.ConcurrentProgramming.Data {
         }
 
         #endregion BallWorker
-        
+
         #region TestingInfrastructure
 
         [Conditional("DEBUG")]
